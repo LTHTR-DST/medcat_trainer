@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -c
+    kompose.version: 1.26.0 (40646f47)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: nginx
+  name: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: nginx
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -c
+        kompose.version: 1.26.0 (40646f47)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: nginx
+    spec:
+      containers:
+        - image: cogstacksystems/medcat-trainer-nginx:v2.6.0
+          name: nginx
+          ports:
+            - containerPort: 8000
+          resources: {}
+          volumeMounts:
+            - mountPath: /home/api/media
+              name: api-media
+            - mountPath: /home/api/static
+              name: api-static
+      restartPolicy: Always
+      volumes:
+        - name: api-media
+          persistentVolumeClaim:
+            claimName: api-media
+        - name: api-static
+          persistentVolumeClaim:
+            claimName: api-static
+status: {}

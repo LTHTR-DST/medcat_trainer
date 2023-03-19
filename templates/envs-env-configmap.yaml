@@ -1,0 +1,16 @@
+apiVersion: v1
+data:
+  CONCEPT_SEARCH_SERVICE_HOST: solr
+  CONCEPT_SEARCH_SERVICE_PORT: "8983"
+  DEBUG: "True"
+  ENV: non-prod
+  LOAD_EXAMPLES: "1"
+  MAX_DATASET_SIZE: "10000"
+  MEDCAT_CONFIG_FILE: /home/configs/base.txt
+  UNIQUE_DOC_NAMES_IN_DATASETS: "True"
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: medcattrainer-envs-env
+  name: envs-env

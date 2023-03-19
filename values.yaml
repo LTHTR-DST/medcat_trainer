@@ -4,6 +4,17 @@
 
 replicaCount: 1
 
+medcattrainer:
+  image: cogstacksystems/medcat-trainer
+  tag: v2.6.0
+  resources:
+    requests:
+      cpu: 100
+      memory: 256Mi
+    limits:
+      cpu: 1000
+      memory: 1Gi
+
 image:
   repository: nginx
   pullPolicy: IfNotPresent
@@ -80,3 +91,48 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+persistentVolumes:
+  - name: api-db
+    capacity: 1Gi
+    shareName: mt-api-db
+    mountPath: "/home/api/db"
+    mountOptions:
+      - dir_mode=0777
+      - file_mode=0777
+      - nobrl
+  - name: api-media
+    capacity: 1Gi
+    shareName: mt-api-media
+    mountPath: "/home/api/media"
+    mountOptions:
+      - dir_mode=0777
+      - file_mode=0777
+      - nobrl
+  - name: api-static
+    capacity: 1Gi
+    shareName: mt-api-static
+    mountPath: "/home/api/static"
+    mountOptions:
+      - dir_mode=0777
+      - file_mode=0777
+      - nobrl
+  - name: solr-data
+    capacity: 1Gi
+    shareName: mt-solr-data
+    mountPath: "/tmp"
+    mountOptions:
+      - dir_mode=0777
+      - file_mode=0777
+      - nobrl
+  - name: mt-data
+    capacity: 1Gi
+    shareName: mt-mt-data
+    mountPath: "/tmp"
+    mountOptions:
+      - dir_mode=0777
+      - file_mode=0777
+      - nobrl
+storageSecret:
+  secretName: xxx
+  secretNamespace: xxx
