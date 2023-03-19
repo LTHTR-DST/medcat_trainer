@@ -1,0 +1,41 @@
+{{- range $volume := .Values.azureStorage }} 
+apiVersion: v1
+#=============================================================================
+# Storage
+#=============================================================================
+kind: PersistentVolume
+metadata:
+  name: {{ $volume.name }}
+  labels:
+    {{- include "medcat-trainer.labels" $ | nindent 4 }}
+spec:
+  capacity:
+    storage: {{ $volume.capacity.storage }}
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: azurefile
+  azureFile:
+    secretName: {{ $volume.secretName }}
+    secretNamespace: {{ $volume.secretNamespace }}
+    shareName: {{ $volume.shareName }}
+    readOnly: false
+  mountOptions:
+    {{- toYaml $volume.mountOptions | nindent 4}}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $volume.name }}
+  labels:
+    {{- include "medcat-trainer.labels" $ | nindent 4 }}
+spec:
+  volumeName: {{ $volume.name }}
+  accessModes: 
+    - ReadWriteMany
+  volumeMode: Filesystem
+  storageClassName: azurefile
+  resources:
+    requests:
+      storage: {{ $volume.capacity.storage }}
+{{ end }}
