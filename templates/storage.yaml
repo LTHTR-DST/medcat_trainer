@@ -1,8 +1,9 @@
 {{- range $volume := .Values.persistentVolumes }} 
+---
+#=============================================================================
+# PersistentVolume {{ $volume.name }}
+#=============================================================================
 apiVersion: v1
-#=============================================================================
-# Storage
-#=============================================================================
 kind: PersistentVolume
 metadata:
   name: {{ $volume.name }}
@@ -16,13 +17,16 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: azurefile
   azureFile:
-    secretName: {{ .Values.storageSecret.secretName }}
-    secretNamespace: {{ .Values.storageSecret.secretNamespace }}
+    secretName: {{ $.Values.storageSecret.secretName }}
+    secretNamespace: {{ $.Values.storageSecret.secretNamespace }}
     shareName: {{ $volume.shareName }}
     readOnly: false
   mountOptions:
     {{- toYaml $volume.mountOptions | nindent 4}}
 ---
+#=============================================================================
+# PersistentVolumeClaim {{ $volume.name }}
+#=============================================================================
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -38,4 +42,5 @@ spec:
   resources:
     requests:
       storage: {{ $volume.capacity }}
+---
 {{ end }}

@@ -63,7 +63,7 @@ spec:
                 configMapKeyRef:
                   key: UNIQUE_DOC_NAMES_IN_DATASETS
                   name: envs-env
-          image: {{ .Values.medcattrainer.image }}:{{ .Values.medcattrainer.tag }} cogstacksystems/medcat-trainer:v2.6.0
+          image: "{{ .Values.medcattrainer.image }}:{{ .Values.medcattrainer.tag }}"
           name: medcattrainer
           resources:
             {{- toYaml .Values.medcattrainer.resources | nindent 12 }}

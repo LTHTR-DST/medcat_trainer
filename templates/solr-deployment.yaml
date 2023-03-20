@@ -1,11 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    kompose.cmd: kompose convert -c
-    kompose.version: 1.26.0 (40646f47)
-  creationTimestamp: null
-  labels:
+  annotations: {}
+  labels: 
     io.kompose.service: solr
   name: solr
 spec:
@@ -17,21 +14,19 @@ spec:
     type: Recreate
   template:
     metadata:
-      annotations:
-        kompose.cmd: kompose convert -c
-        kompose.version: 1.26.0 (40646f47)
-      creationTimestamp: null
+      annotations: {}
       labels:
         io.kompose.service: solr
     spec:
       containers:
         - args:
             - -cloud
-          image: solr:8
+          image: "{{ .Values.solr.image }}:{{ .Values.solr.tag }}"
           name: mct-solr
           ports:
             - containerPort: 8983
-          resources: {}
+          resources:
+            {{- toYaml .Values.medcattrainer.resources | nindent 12 }}
           volumeMounts:
             - mountPath: /var/solr
               name: solr-data
