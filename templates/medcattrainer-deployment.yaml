@@ -65,6 +65,8 @@ spec:
                   name: envs-env
           image: "{{ .Values.medcattrainer.image }}:{{ .Values.medcattrainer.tag }}"
           name: medcattrainer
+          ports:
+            - containerPort: 8000
           resources:
             {{- toYaml .Values.medcattrainer.resources | nindent 12 }}
           volumeMounts:
