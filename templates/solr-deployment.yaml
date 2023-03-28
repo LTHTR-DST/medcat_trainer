@@ -19,10 +19,10 @@ spec:
         io.kompose.service: mct-solr
     spec:
       containers:
-        - args:
-            - -cloud
-          image: "{{ .Values.solr.image }}:{{ .Values.solr.tag }}"
+        - image: "{{ .Values.solr.image }}:{{ .Values.solr.tag }}"
           name: mct-solr
+          args:
+            - -cloud
           ports:
             - containerPort: 8983
           resources:
@@ -30,6 +30,11 @@ spec:
           volumeMounts:
             - mountPath: /var/solr
               name: solr-data
+          env: 
+            - name: http_proxy
+              value: ""
+            - name: HTTP_PROXY
+              value: ""
       restartPolicy: Always
       volumes:
         - name: solr-data

@@ -65,6 +65,10 @@ spec:
                 configMapKeyRef:
                   key: UNIQUE_DOC_NAMES_IN_DATASETS
                   name: envs-env
+            - name: http_proxy
+              value: ""
+            - name: HTTP_PROXY
+              value: ""
           ports:
             - containerPort: 8000
           resources:
