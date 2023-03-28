@@ -1,0 +1,42 @@
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: medcattrainer
+  namespace: medcat-trainer
+  labels: {}
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/proxy-body-size: 32m
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /media
+            pathType: Prefix
+            backend:
+              service:
+                name: mtnginx
+                port:
+                  name: http
+          - path: /static
+            pathType: Prefix
+            backend:
+              service:
+                name: mtnginx
+                port:
+                  name: http
+          - path: /api/concepts/
+            pathType: Prefix
+            backend:
+              service:
+                name: mct-solr
+                port:
+                  name: http
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: medcattrainer
+                port:
+                  name: http

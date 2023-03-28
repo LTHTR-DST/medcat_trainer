@@ -18,8 +18,10 @@ spec:
         io.kompose.service: medcattrainer
     spec:
       containers:
-        - args:
-            - /home/run.sh
+        - image: "{{ .Values.medcattrainer.image }}:{{ .Values.medcattrainer.tag }}"
+          name: medcattrainer
+          imagePullPolicy: Always
+          args: ["/home/run.sh"]
           env:
             - name: CONCEPT_SEARCH_SERVICE_HOST
               valueFrom:
@@ -63,8 +65,6 @@ spec:
                 configMapKeyRef:
                   key: UNIQUE_DOC_NAMES_IN_DATASETS
                   name: envs-env
-          image: "{{ .Values.medcattrainer.image }}:{{ .Values.medcattrainer.tag }}"
-          name: medcattrainer
           ports:
             - containerPort: 8000
           resources:
@@ -78,6 +78,10 @@ spec:
               name: api-static
             - mountPath: /home/api/db
               name: api-db
+          securityContext:
+            runAsUser: 999
+            runAsGroup: 999
+            fsGroup: 999
       restartPolicy: Always
       volumes:
         - name: mt-data

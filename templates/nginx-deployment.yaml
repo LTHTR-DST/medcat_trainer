@@ -21,6 +21,7 @@ spec:
       containers:
         - image: "{{ .Values.mtnginx.image }}:{{ .Values.mtnginx.tag }}"
           name: mtnginx
+          imagePullPolicy: Always
           ports:
             - containerPort: 8000
           resources: {}

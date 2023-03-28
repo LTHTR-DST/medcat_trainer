@@ -3,14 +3,14 @@ kind: Service
 metadata:
   annotations: {}
   labels:
-    io.kompose.service: solr
-  name: solr
+    io.kompose.service: mct-solr
+  name: mct-solr
 spec:
   ports:
-    - name: "8983"
+    - name: http
       port: 8983
       targetPort: 8983
   selector:
-    io.kompose.service: solr
+    io.kompose.service: mct-solr
 status:
   loadBalancer: {}

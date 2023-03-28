@@ -9,16 +9,15 @@ nameOverride: ""
 fullnameOverride: ""
 
 medcattrainer:
-  image: cogstacksystems/medcat-trainer
-  tag: v2.6.0
+  image: acrlanderdev.azurecr.io/vvcb/medcat-trainer
+  tag: v2.7.1
   resources:
     requests:
       cpu: 100m
-      memory: 256Mi
+      memory: 4Gi
     limits:
-      cpu: 1000m
-      memory: 1Gi
-
+      cpu: 4000m
+      memory: 8Gi
 solr:
   image: solr
   tag: 8
@@ -31,8 +30,8 @@ solr:
       memory: 4Gi
 
 mtnginx:
-  image: cogstacksystems/medcat-trainer-nginx
-  tag: v2.6.0
+  image: acrlanderdev.azurecr.io/vvcb/mt-nginx
+  tag: v2.7.1
   resources:
     requests:
       cpu: 100m
@@ -67,22 +66,29 @@ service:
   type: ClusterIP
   port: 80
 
-ingress:
-  enabled: false
-  className: ""
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-  hosts:
-    - host: chart-example.local
-      paths:
-        - path: /
-          pathType: ImplementationSpecific
+
+# ingress:
+#   enabled: true
+#   className: "nginx"
+#   annotations:
+#     nginx.ingress.kubernetes.io/ssl-redirect: "false"
+#     nginx.ingress.kubernetes.io/rewrite-target: /$2
+#     nginx.ingress.kubernetes.io/proxy-body-size: 128m
+#   hosts:
+#     - host: ai.xlthtr.nhs.uk
+#       paths:
+#         - path: /neulander_api/v1(/|$)(.*)
+#           pathType: Prefix
+#     - host: lander-v2.privatelink.uksouth.azmk8s.io
+#       paths:
+#         - path: /neulander_api/v1(/|$)(.*)
+#           pathType: Prefix
+
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
-
+  
 autoscaling:
   enabled: false
   minReplicas: 1
@@ -105,6 +111,8 @@ persistentVolumes:
       - dir_mode=0777
       - file_mode=0777
       - nobrl
+      - uid=999
+      - gid=999
   - name: api-media
     capacity: 1Gi
     shareName: mt-api-media
@@ -113,6 +121,8 @@ persistentVolumes:
       - dir_mode=0777
       - file_mode=0777
       - nobrl
+      - uid=999
+      - gid=999
   - name: api-static
     capacity: 1Gi
     shareName: mt-api-static
@@ -121,6 +131,8 @@ persistentVolumes:
       - dir_mode=0777
       - file_mode=0777
       - nobrl
+      - uid=999
+      - gid=999
   - name: solr-data
     capacity: 1Gi
     shareName: mt-solr-data
